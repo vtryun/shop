@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getProducts } from "@/api";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

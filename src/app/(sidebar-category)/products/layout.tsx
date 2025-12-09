@@ -1,6 +1,8 @@
 import { getCategories } from "@/api";
 import SideBar from "@/components/sidebar";
 
+export const dynamic = "force-dynamic";
+
 export default async function SideBarLayout({
   children,
 }: Readonly<{
