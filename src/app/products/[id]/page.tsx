@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { getProductById } from "@/api";
 
 type Product = {
   id: number;
@@ -21,7 +20,8 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const product = await getProductById(id);
+  const data = await fetch(`https://fakestoreapi.com/products/${id}`);
+  const product: Product = await data.json();
 
   if (!product) {
     return {
@@ -42,7 +42,8 @@ export default async function ProductDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const product: Product | null = await getProductById(id);
+  const data = await fetch(`https://fakestoreapi.com/products/${id}`);
+  const product: Product = await data.json();
 
   if (!product) {
     return (

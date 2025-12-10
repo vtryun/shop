@@ -1,4 +1,3 @@
-import { getCategories } from "@/api";
 import SideBar from "@/components/sidebar";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +7,8 @@ export default async function SideBarLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories = await getCategories();
+  const data = await fetch("https://fakestoreapi.com/products/categories");
+  const categories = await data.json();
   console.log(categories);
 
   return (
