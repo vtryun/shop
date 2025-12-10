@@ -19,7 +19,7 @@ export default function SideBarLayout({
   });
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading users</p>;
+  if (error) return <p>Error</p>;
   console.log(categories);
 
   return (
