@@ -7,14 +7,7 @@ export default async function SideBarLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const data = await fetch("https://fakestoreapi.com/products/categories", {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
-    },
-  });
-  const text = await data.text();
-  console.log(text);
+  const data = await fetch("https://dummyjson.com/products/category-list");
   const categories = await data.json();
   console.log(categories);
 
