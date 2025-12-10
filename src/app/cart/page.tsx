@@ -1,17 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import useCartStore from "@/store/useCartStore";
+import useCartStore from "@/store/useCartStore"; // 注意：建议命名导出时加花括号
 
 export default function CartPage() {
-  const {
-    cart,
-    updateQuantity,
-    removeFromCart,
-    clearCart,
-    getTotalItems,
-    getTotalPrice,
-  } = useCartStore();
+  // 获取 cart 和 actions
+  const cart = useCartStore((state) => state.cart);
+  const updateQuantity = useCartStore((state) => state.updateQuantity);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
+
+  // ✅ 用 selector 计算派生状态，确保响应式更新
+  const totalItems = useCartStore((state) =>
+    state.cart.reduce((sum, item) => sum + item.quantity, 0),
+  );
+  const totalPrice = useCartStore((state) =>
+    state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+  );
 
   if (cart.length === 0) {
     return (
@@ -24,9 +29,7 @@ export default function CartPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">
-        Shopping Cart ({getTotalItems()})
-      </h1>
+      <h1 className="text-2xl font-bold mb-6">Shopping Cart ({totalItems})</h1>
 
       <div className="space-y-4">
         {cart.map((item) => (
@@ -80,7 +83,7 @@ export default function CartPage() {
       <div className="mt-6 p-4 border-t">
         <div className="flex justify-between text-lg font-semibold">
           <span>Total:</span>
-          <span>${getTotalPrice().toFixed(2)}</span>
+          <span>${totalPrice.toFixed(2)}</span>
         </div>
 
         <div className="mt-4 flex space-x-3">
