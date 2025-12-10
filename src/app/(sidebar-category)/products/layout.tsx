@@ -9,6 +9,8 @@ export default async function SideBarLayout({
 }>) {
   const data = await fetch("https://fakestoreapi.com/products/categories");
   const categories = await data.json();
+  const text = data.text();
+  console.log(text);
   console.log(categories);
 
   return (
