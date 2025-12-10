@@ -15,7 +15,7 @@ function LinkItem({
   return (
     <Link href={href}>
       <div
-        className={`p-2 rounded  ${active ? "bg-gray-200 font-bold" : "hover:bg-gray-100"}`}
+        className={`rounded p-1 ${active ? "bg-gray-200 font-bold" : "hover:bg-gray-100"}`}
       >
         {children}
       </div>
@@ -23,7 +23,17 @@ function LinkItem({
   );
 }
 
-export default function SideBar({ categories }: { categories: string[] }) {
+interface categoryItemProps {
+  slug: string;
+  name: string;
+  url: string;
+}
+
+export default function SideBar({
+  categories,
+}: {
+  categories: categoryItemProps[];
+}) {
   const pathname = usePathname();
 
   let currentCategory: string | null = null;
@@ -37,17 +47,17 @@ export default function SideBar({ categories }: { categories: string[] }) {
   }
 
   return (
-    <nav className="p-4 flex flex-col gap-3">
+    <nav className="p-4 flex flex-col">
       <LinkItem href="/products" active={currentCategory === null}>
         all products
       </LinkItem>
       {categories.map((category) => (
         <LinkItem
-          key={category}
-          active={currentCategory === category}
-          href={`/products/category/${encodeURIComponent(category)}`}
+          key={category.slug}
+          active={currentCategory === category.slug}
+          href={`/products/category/${category.slug}`}
         >
-          {category}
+          {category.name}
         </LinkItem>
       ))}
     </nav>

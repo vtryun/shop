@@ -1,17 +1,48 @@
-export interface Product {
+export type Product = {
   id: number;
   title: string;
-  price: number;
   description: string;
   category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
+  price: number;
+  discountPercentage: number;
+  rating: number;
+  stock: number;
+  tags: string[];
+  brand: string;
+  sku: string;
+  weight: number;
+  dimensions: {
+    width: number;
+    height: number;
+    depth: number;
   };
+  warrantyInformation: string;
+  shippingInformation: string;
+  availabilityStatus: string;
+  reviews: Review[];
+  returnPolicy: string;
+  minimumOrderQuantity: number;
+  meta: {
+    createdAt: string; // ISO 8601 日期字符串
+    updatedAt: string;
+    barcode: string;
+    qrCode: string;
+  };
+  thumbnail: string;
+  images: string[];
 }
 
-export interface CartItem {
-  productId: number;
-  quantity: number;
+interface Review {
+  rating: number;
+  comment: string;
+  date: string; // ISO 8601 日期字符串
+  reviewerName: string;
+  reviewerEmail: string;
 }
+
+export type ProductResponse = {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+};
