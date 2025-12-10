@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import type { Product } from "@/type"; // 确保你更新了这里的类型定义
+import { getProductById } from "@/api";
+import AddToCartButton from "@/components/add-to-cart-button";
+import type { Product } from "@/type";
 
 export async function generateMetadata({
   params,
@@ -9,12 +11,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
 
-  // 建议添加 try-catch 以防 fetch 失败
   try {
-    const res = await fetch(`https://dummyjson.com/products/${id}`);
-    if (!res.ok) return { title: "Product Not Found" };
-
-    const product: Product = await res.json();
+    const product: Product = await getProductById(id);
     return {
       title: product.title,
       description: product.description,
@@ -37,8 +35,6 @@ export default async function ProductDetailPage({
   const res = await fetch(`https://dummyjson.com/products/${id}`);
 
   if (!res.ok) {
-    // 如果 API 返回 404，可以使用 Next.js 原生的 notFound 界面，或者保留你原本的 UI
-    // return notFound();
     return (
       <div className="container mx-auto py-12 text-center">
         <h1 className="text-2xl font-bold text-red-600">Product not found</h1>
@@ -48,7 +44,6 @@ export default async function ProductDetailPage({
 
   const product: Product = await res.json();
 
-  // 获取主图，如果 images 数组为空则回退到 thumbnail
   const mainImage = product.images?.[0] || product.thumbnail;
 
   return (
@@ -115,13 +110,7 @@ export default async function ProductDetailPage({
             </p>
           </div>
 
-          <button
-            type="button"
-            className="mt-8 px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition shadow-lg hover:shadow-xl w-full md:w-auto"
-            aria-label={`Add ${product.title} to cart`}
-          >
-            Add to Cart
-          </button>
+          <AddToCartButton product={product} />
 
           <p className="mt-4 text-xs text-gray-400">
             {product.shippingInformation} | {product.returnPolicy}
